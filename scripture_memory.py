@@ -1,13 +1,14 @@
 import curses
 from curses import wrapper
 
-MENU_OPTS = ['Choose Text', 'About', 'Exit']
+MENU_OPTS = ['Choose Text', 'Practice a Text', 'Exit']
 
 def main(stdscr):
     curses.curs_set(0) #remove the cursor
 
     #default to start at the first menu option
     current_row_i = 0
+    current_text = None
     #print the menu
     print_menu(stdscr, current_row_i)
     while True:
@@ -35,6 +36,10 @@ def main(stdscr):
             if MENU_OPTS[current_row_i] == 'Exit':
                 #user selected exit, end the program at key press
                 break
+            elif MENU_OPTS[current_row_i] == 'Choose a Text':
+                current_text = choose_text(stdscr)
+            elif MENU_OPTS[current_row_i] == 'Practice a Text':
+                practice_text(stdscr)
         
         #print the menu with the currently selected item
         print_menu(stdscr, current_row_i)
@@ -73,6 +78,12 @@ def print_menu(stdscr, selected_row_i):
         stdscr.attroff(select_color)
     #refresh the screen
     stdscr.refresh()
+
+def practice_text(stdscr):
+    stdscr.clear()
+    stdscr.addstr(0,0, "This is the funciton used to practice memorizing a text.")
+    stdscr.refresh()
+    stdscr.getch()
 
 if __name__=='__main__':
     wrapper(main)
