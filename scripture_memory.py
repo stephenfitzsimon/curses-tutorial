@@ -80,10 +80,19 @@ def print_menu(stdscr, selected_row_i):
     stdscr.refresh()
 
 def practice_text(stdscr):
-    stdscr.clear()
-    stdscr.addstr(0,0, "This is the funciton used to practice memorizing a text.")
-    stdscr.refresh()
-    stdscr.getch()
+    txt = get_text('example_text.txt')
+    current_line = 0
+    while True and current_line < len(txt):
+        stdscr.clear()
+        stdscr.addstr(0,0, txt[current_line])
+        stdscr.refresh()
+        stdscr.getch()
+        current_line += 1
+
+def get_text(filename):
+    with open(filename) as f:
+        txt = [l for l in f]
+    return txt
 
 if __name__=='__main__':
     wrapper(main)
