@@ -2,6 +2,7 @@ import curses
 from curses import wrapper
 
 MENU_OPTS = ['Choose Text', 'Practice a Text', 'Exit']
+LINES_TO_DISPLAY = 5
 
 def main(stdscr):
 
@@ -77,20 +78,27 @@ def practice_text(stdscr):
     wrong_color = curses.color_pair(2)
     right_color = curses.color_pair(3)
     txt = get_text('example_text.txt')
-    current_line = 1
-    while True and current_line < len(txt):
+    current_line_idx = 0
+    while True and current_line_idx < len(txt):
         stdscr.clear()
         curses.curs_set(1)
-        stdscr.addstr(0, 0, txt[current_line - 1])
-        stdscr.addstr(1, 0, txt[current_line])
+        if current_line_idx < LINES_TO_DISPLAY:
+            start = 0
+        else:
+            start = current_line_idx - LINES_TO_DISPLAY
+        prev_lines = txt[start:current_line_idx]
+        current_line = txt[current_line_idx]
+        for i, text_line in enumerate(prev_lines):
+            stdscr.addstr(i, 0, text_line)
+        stdscr.addstr(len(prev_lines)+1, 0, current_line)
         stdscr.refresh()
         stdscr.getch()
-        current_line += 1
+        current_line_idx += 1
 
 def get_text(filename):
     txt = ['Beginning']
     with open(filename) as f:
-        txt = [l for l in f]
+        txt += [l for l in f]
     return txt
 
 if __name__=='__main__':
