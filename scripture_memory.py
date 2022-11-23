@@ -4,7 +4,6 @@ from curses import wrapper
 MENU_OPTS = ['Choose Text', 'Practice a Text', 'Exit']
 
 def main(stdscr):
-    curses.curs_set(0) #remove the cursor
 
     #default to start at the first menu option
     current_row_i = 0
@@ -12,6 +11,7 @@ def main(stdscr):
     #print the menu
     print_menu(stdscr, current_row_i)
     while True:
+        curses.curs_set(0) #remove the cursor
         #key listens for the user to press a key
         key = stdscr.getch()
         #clear the screen
@@ -24,20 +24,12 @@ def main(stdscr):
         elif key == curses.KEY_DOWN and current_row_i < len(MENU_OPTS) - 1:
             current_row_i += 1
         elif key == curses.KEY_ENTER or key in [10, 13]:
-            #user pressed enter, show what item was selected
-            #clear the screen
-            stdscr.clear()
-            #display a string with the menu item
-            stdscr.addstr(0, 0, f"You choose {MENU_OPTS[current_row_i]}")
-            #refresh to display current string
-            stdscr.refresh()
-            #listen for a key press
-            stdscr.getch()
             if MENU_OPTS[current_row_i] == 'Exit':
                 #user selected exit, end the program at key press
                 break
             elif MENU_OPTS[current_row_i] == 'Choose a Text':
-                current_text = choose_text(stdscr)
+                pass
+                #current_text = choose_text(stdscr)
             elif MENU_OPTS[current_row_i] == 'Practice a Text':
                 practice_text(stdscr)
         
@@ -80,16 +72,23 @@ def print_menu(stdscr, selected_row_i):
     stdscr.refresh()
 
 def practice_text(stdscr):
+    curses.init_pair(2, curses.COLOR_BLACK, curses.COLOR_RED)
+    curses.init_pair(3, curses.COLOR_BLACK, curses.COLOR_GREEN)
+    wrong_color = curses.color_pair(2)
+    right_color = curses.color_pair(3)
     txt = get_text('example_text.txt')
-    current_line = 0
+    current_line = 1
     while True and current_line < len(txt):
         stdscr.clear()
-        stdscr.addstr(0,0, txt[current_line])
+        curses.curs_set(1)
+        stdscr.addstr(0, 0, txt[current_line - 1])
+        stdscr.addstr(1, 0, txt[current_line])
         stdscr.refresh()
         stdscr.getch()
         current_line += 1
 
 def get_text(filename):
+    txt = ['Beginning']
     with open(filename) as f:
         txt = [l for l in f]
     return txt
