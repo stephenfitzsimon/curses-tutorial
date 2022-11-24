@@ -79,9 +79,11 @@ def practice_text(stdscr):
     right_color = curses.color_pair(3)
     txt = get_text('example_text.txt')
     current_line_idx = 0
+    user_text = []
     while True and current_line_idx < len(txt):
         stdscr.clear()
         curses.curs_set(1)
+        # display the lines up to the testing line
         if current_line_idx < LINES_TO_DISPLAY:
             start = 0
         else:
@@ -89,8 +91,15 @@ def practice_text(stdscr):
         prev_lines = txt[start:current_line_idx]
         current_line = txt[current_line_idx]
         for i, text_line in enumerate(prev_lines):
-            stdscr.addstr(i, 0, text_line)
-        stdscr.addstr(len(prev_lines)+1, 0, current_line)
+            stdscr.addstr(i+1, 0, text_line)
+        
+        key = stdscr.getkey()
+        user_text.append(key)
+
+        for c in user_text:
+            user_str = ''.join(user_text)
+
+        stdscr.addstr(len(prev_lines)+2, 0, user_str)
         stdscr.refresh()
         stdscr.getch()
         current_line_idx += 1
