@@ -5,23 +5,26 @@ import curses
 from curses import wrapper
 
 def main(stdscr):
+    curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_RED)
+    red_text = curses.color_pair(1)
     #stdscr is an object representing the full terminal screen
     stdscr.clear()
     #write to the screen, placing the first char at row, column
-    row = 10
-    column = 10
-    stdscr.addstr(row, column, "Hello World 1")
-    row = 15
-    column = 15
-    stdscr.addstr(row, column, "Hello World 2")
-    #now overwrite some of the chars.  note that the letters
-    #not written over will remain
-    row = 15
-    column = 11
-    stdscr.addstr(row, column, "OVERWRITE")
+    stdscr.addstr(0,0, "Please type something:")
     stdscr.refresh()
-    #end program when any key is pushed
-    stdscr.getch()
+    user_str = ""
+    while True:
+        key = stdscr.getkey()
+        user_str += key
+        for i, c in enumerate(user_str):
+            if c == 'a':
+                stdscr.attron(red_text)
+                stdscr.addstr(2,i, c)
+                stdscr.attroff(red_text)
+            else:
+                stdscr.addstr(2,i, c)
+        stdscr.refresh()
+
 
 # wrapper will initialize within a try/except block
 # making debugging easier.
