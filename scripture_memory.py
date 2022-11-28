@@ -99,9 +99,8 @@ def practice_text(stdscr):
         for c in user_text:
             user_str = ''.join(user_text)
 
-        stdscr.addstr(len(prev_lines)+2, 0, user_str)
+        stdscr.addstr(7, 0, user_str)
         stdscr.refresh()
-        stdscr.getch()
         current_line_idx += 1
 
 def get_text(filename):
