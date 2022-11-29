@@ -15,8 +15,13 @@ def main():
         current_line = txt[current_line_idx]
 
         print(''.join(prev_lines))
-        user_text = input()
-        
+        while True:
+            print(f"\nCurrent line: {current_line}")
+            user_text = input("Enter the next line:")
+            if user_text == current_line:
+                print("That's the correct line!")
+                break
+
         current_line_idx += 1
 
 def get_text(filename):

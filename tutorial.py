@@ -9,15 +9,18 @@ def main(stdscr):
     red_text = curses.color_pair(1)
     #stdscr is an object representing the full terminal screen
     stdscr.clear()
-    #write to the screen, placing the first char at row, column
-    stdscr.addstr(0,0, "Please type something:")
-    stdscr.refresh()
+
+    test_str = "The quick brown fox jumped over the lazy dog."
+    
     user_str = ""
     while True:
+        #write to the screen, placing the first char at row, column
+        stdscr.addstr(0,0, test_str)
+        stdscr.refresh()
         key = stdscr.getkey()
         user_str += key
         for i, c in enumerate(user_str):
-            if c == 'a':
+            if c != test_str[i]:
                 stdscr.attron(red_text)
                 stdscr.addstr(2,i, c)
                 stdscr.attroff(red_text)

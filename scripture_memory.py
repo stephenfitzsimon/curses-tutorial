@@ -1,5 +1,5 @@
 import curses
-from curses import wrapper
+from curses import KEY_ENTER, wrapper
 
 MENU_OPTS = ['Choose Text', 'Practice a Text', 'Exit']
 LINES_TO_DISPLAY = 5
@@ -81,7 +81,6 @@ def practice_text(stdscr):
     current_line_idx = 0
     user_text = []
     while True and current_line_idx < len(txt):
-        stdscr.clear()
         curses.curs_set(1)
         # display the lines up to the testing line
         if current_line_idx < LINES_TO_DISPLAY:
@@ -90,17 +89,24 @@ def practice_text(stdscr):
             start = current_line_idx - LINES_TO_DISPLAY
         prev_lines = txt[start:current_line_idx]
         current_line = txt[current_line_idx]
-        for i, text_line in enumerate(prev_lines):
-            stdscr.addstr(i+1, 0, text_line)
         
-        key = stdscr.getkey()
-        user_text.append(key)
+        
+        while True:
+            stdscr.clear()
+            for i, text_line in enumerate(prev_lines):
+                stdscr.addstr(i+1, 0, text_line)
 
-        for c in user_text:
-            user_str = ''.join(user_text)
+            key = stdscr.getkey()
+            user_text.append(key)
 
-        stdscr.addstr(7, 0, user_str)
-        stdscr.refresh()
+            for c in user_text:
+                user_str = ''.join(user_text)
+
+            stdscr.addstr(7, 0, user_str)
+            stdscr.refresh()
+            if key == KEY_ENTER or key in [10, 13]:
+                break
+            
         current_line_idx += 1
 
 def get_text(filename):
