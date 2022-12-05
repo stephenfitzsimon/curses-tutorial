@@ -12,10 +12,21 @@ def wpm_test(stdscr):
     target_text = "Hello World! This is example text"
     current_text = []
 
-    stdscr.clear()
-    stdscr.addstr(target_text)
-    stdscr.refresh()
-    stdscr.getkey()
+
+
+    while True:
+        key = stdscr.getkey()
+        
+        if ord(key) == 27:
+            break
+
+        current_text.append(key)
+
+        stdscr.clear()
+        stdscr.addstr(target_text)
+        for char in current_text:
+            stdscr.addstr(char, curses.color_pair(1))
+        stdscr.refresh()
 
 def main(stdscr):
     curses.init_pair(1, curses.COLOR_GREEN, curses.COLOR_BLACK)
