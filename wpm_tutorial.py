@@ -11,7 +11,11 @@ def start_screen(stdscr):
 def display_text(stdscr, target_text, current_text, wpm = 0):
     stdscr.addstr(target_text)
     for i, char in enumerate(current_text):
-        stdscr.addstr(0, i, char, curses.color_pair(1))
+        correct_char = target_text[i]
+        color = curses.color_pair(1)
+        if char != correct_char:
+            color = curses.color_pair(2)
+        stdscr.addstr(0, i, char, color)
     
 
 def wpm_test(stdscr):
