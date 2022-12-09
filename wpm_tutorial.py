@@ -36,7 +36,11 @@ def wpm_test(stdscr):
         # for char in current_text:
         #     stdscr.addstr(char, curses.color_pair(1))
         stdscr.refresh()
-        
+
+        if "".join(current_text) == target_text:
+            stdscr.nodelay(False)
+            break
+
         try:
             key = stdscr.getkey()
         except:
