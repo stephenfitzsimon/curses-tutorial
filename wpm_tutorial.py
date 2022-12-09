@@ -1,5 +1,6 @@
 import curses
 from curses import wrapper
+import time
 
 def start_screen(stdscr):
     stdscr.clear()
@@ -10,6 +11,7 @@ def start_screen(stdscr):
 
 def display_text(stdscr, target_text, current_text, wpm = 0):
     stdscr.addstr(target_text)
+    stdscr.addstr(1, 0, f"WPM: {wpm}")
     for i, char in enumerate(current_text):
         correct_char = target_text[i]
         color = curses.color_pair(1)
@@ -21,22 +23,31 @@ def display_text(stdscr, target_text, current_text, wpm = 0):
 def wpm_test(stdscr):
     target_text = "Hello World! This is example text"
     current_text = []
+    wpm = 0
+    start_time = time.time()
+    stdscr.nodelay(True)
+
     while True:
+        time_elapsed = max(time.time() - start_time, 1)
+        wpm = round((len(current_text) / (time_elapsed / 60)) / 5)
         stdscr.clear()
-        display_text(stdscr, target_text, current_text)
+        display_text(stdscr, target_text, current_text, wpm)
         # stdscr.addstr(target_text)
         # for char in current_text:
         #     stdscr.addstr(char, curses.color_pair(1))
         stdscr.refresh()
-
-        key = stdscr.getkey()
+        
+        try:
+            key = stdscr.getkey()
+        except:
+            continue
 
         if ord(key) == 27:
             break
         if key in ("KEY_BACKSPACE", '\b', "\x7f"):
             if len(current_text) > 0:
                 current_text.pop()
-        else:
+        elif len(current_text) < len(target_text):
             current_text.append(key)     
 
 def main(stdscr):
